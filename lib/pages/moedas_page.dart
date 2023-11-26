@@ -17,13 +17,40 @@ class _MoedasPageState extends State<MoedasPage> {
     NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
     List<Moeda> selecionadas = [];
 
+appBarDinamica() {
+  if (selecionadas.isEmpty) {
+    return AppBar(
+        title: const Text('Cripto Moedas'),
+        
+        
+      );
+  } else {
+    return AppBar(
+      title: Text('${selecionadas.length} selecionadas'),
+      backgroundColor: Colors.amberAccent,
+        elevation: 1,
+        iconTheme: const IconThemeData(color: Colors.black87),
+        titleTextStyle: const TextStyle(
+        color: Colors.black87,
+        fontSize: 20,
+        fontWeight: FontWeight.bold),
+      leading: IconButton(
+        onPressed: () {
+          setState(() {
+            selecionadas = [];
+          });
+        },
+        icon: const Icon(Icons.close),
+    ));
+  }
+  
+}
+
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar: AppBar(
-        title: const Text('Cripto Moedas'),
-      ),
+      appBar: appBarDinamica(),
       body: ListView.separated(
         itemBuilder: (BuildContext context, int moeda) {
           return ListTile(
@@ -64,7 +91,19 @@ class _MoedasPageState extends State<MoedasPage> {
         },
         padding: const EdgeInsets.all(16),
         separatorBuilder: (_, ___) => const Divider(),
-        itemCount: tabela.length)
+        itemCount: tabela.length),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat ,
+        floatingActionButton: selecionadas.isNotEmpty
+        ? FloatingActionButton.extended(
+          onPressed: (){},
+          icon: const Icon(Icons.star),
+
+          label: const Text('Favoritar'),
+          backgroundColor: Colors.greenAccent,
+          
+          )
+        : null,
+          
     );
   }
 }
